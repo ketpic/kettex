@@ -29,9 +29,9 @@ fi
 
 ## output system-wide settings 
 KETCINDYSCRIPTS=$(dirname $(kpsewhich -format=texmfscripts setketcindy.txt))
-dirhead=${CINDYPLUG}/dirhead.txt
-if [ ! -f ${dirhead} ]; then
-    cat<<EOF>${dirhead}
+sysdirhead=${CINDYPLUG}/dirhead.txt
+if [ ! -f ${sysdirhead} ]; then
+    cat<<EOF>${sysdirhead}
 PathThead="${TLPATH}/";
 Homehead="/Users";
 Dirhead="${KETCINDYSCRIPTS}";
@@ -40,17 +40,38 @@ import("setketcindy.txt");
 import("ketoutset.txt");
 EOF
 fi
-dirheadsci=${CINDYPLUG}/dirheadsci.txt
-if [ ! -f ${dirhead} ]; then
-    cat<<EOF>${dirheadsci}
-PathThead="${TLPATH}/";
-Homehead="/Users";
-Dirhead="${KETCINDYSCRIPTS}";
-setdirectory(Dirhead);
-import("setketcindysci.txt");
-import("ketoutset.txt");
+## not support Scilab as default
+# sysdirheadsci=${CINDYPLUG}/dirheadsci.txt
+# if [ ! -f ${sysdirheadsci} ]; then
+#     cat<<EOF>${sysdirheadsci}
+# PathThead="${TLPATH}/";
+# Homehead="/Users";
+# Dirhead="${KETCINDYSCRIPTS}";
+# setdirectory(Dirhead);
+# import("setketcindysci.txt");
+# import("ketoutset.txt");
+# EOF
+# fi
+
+## output user-wide settings
+userdirhead=${HOME}/ketcindyhead.txt
+if [ ! -f ${userdirhead} ]; then
+    cat<<EOF>${userdirhead}
+Dirfile=gethome()+"/ketcindy";
+PathT=PathThead+"uplatex";
+Mackc="sh";
+// Pathpdf="preview";
+// Pathpdf="skim";
 EOF
 fi
 
+## copy manuals and samples
+userketcindydir=${HOME}/ketcindy
+if [ ! -d ${userketcindydir} ]; then
+    \cp -afv $(kpsewhich --var-value=TEXMFDIST)/doc/support/ketcindy ${userketcindydir}
+    rm -rf ${userketcindydir}/README.TeXLive ${userketcindydir}/source
+fi
+
+## Then, now just kick the ketcindy starter script
 ketcindy $@ || \
     osascript -e "display dialog \"$(ketcindy $@ 2>&1)\""
