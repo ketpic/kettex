@@ -68,7 +68,7 @@ fi
 ## copy manuals and samples
 userketcindydir=${HOME}/ketcindy
 if [ ! -d ${userketcindydir} ]; then
-    \cp -afv $(kpsewhich --var-value=TEXMFDIST)/doc/support/ketcindy ${userketcindydir}
+    cp -a $(kpsewhich --var-value=TEXMFDIST)/doc/support/ketcindy ${userketcindydir}
     rm -rf ${userketcindydir}/README.TeXLive ${userketcindydir}/source
 fi
 
