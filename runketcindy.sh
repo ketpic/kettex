@@ -29,41 +29,34 @@ fi
 
 ## output system-wide settings 
 KETCINDYSCRIPTS=$(dirname $(kpsewhich -format=texmfscripts setketcindy.txt))
-sysdirhead=${CINDYPLUG}/dirhead.txt
+sysdirhead=${CINDYPLUG}/ketcindy.ini
 if [ ! -f ${sysdirhead} ]; then
     cat<<EOF>${sysdirhead}
 PathThead="${TLPATH}/";
-Homehead="/Users";
+//Homehead="/Users";
+Dirhead=Dircdy;
+Dirwork=gethome()+pathsep()+"ketcindy";
+Dircdy=Dirwork;
+//Dirhead=gettexmfdist()+pathsep()+"scripts"+pathsep()+"ketcindy";
 Dirhead="${KETCINDYSCRIPTS}";
 setdirectory(Dirhead);
 import("setketcindy.txt");
 import("ketoutset.txt");
+setdirectory(Dirwork);
 EOF
 fi
-## not support Scilab as default
-# sysdirheadsci=${CINDYPLUG}/dirheadsci.txt
-# if [ ! -f ${sysdirheadsci} ]; then
-#     cat<<EOF>${sysdirheadsci}
-# PathThead="${TLPATH}/";
-# Homehead="/Users";
-# Dirhead="${KETCINDYSCRIPTS}";
-# setdirectory(Dirhead);
-# import("setketcindysci.txt");
-# import("ketoutset.txt");
+
+# ## output user-wide settings
+# userdirhead=${HOME}/ketcindyhead.txt
+# if [ ! -f ${userdirhead} ]; then
+#     cat<<EOF>${userdirhead}
+# Dirfile=gethome()+"/ketcindy";
+# PathT=PathThead+"uplatex";
+# Mackc="sh";
+# // Pathpdf="preview";
+# // Pathpdf="skim";
 # EOF
 # fi
-
-## output user-wide settings
-userdirhead=${HOME}/ketcindyhead.txt
-if [ ! -f ${userdirhead} ]; then
-    cat<<EOF>${userdirhead}
-Dirfile=gethome()+"/ketcindy";
-PathT=PathThead+"uplatex";
-Mackc="sh";
-// Pathpdf="preview";
-// Pathpdf="skim";
-EOF
-fi
 
 ## copy manuals and samples
 userketcindydir=${HOME}/ketcindy
