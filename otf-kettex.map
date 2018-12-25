@@ -1,0 +1,80 @@
+
+% TEXT, 90JIS
+hminl-h	H	ipaexm.ttf %!PS IPAexMincho
+hminl-v	V	ipaexm.ttf %!PS IPAexMincho
+hminr-h	H	ipaexm.ttf %!PS IPAexMincho
+hminr-v	V	ipaexm.ttf %!PS IPAexMincho
+hminb-h	H	ipaexm.ttf %!PS IPAexMincho
+hminb-v	V	ipaexm.ttf %!PS IPAexMincho
+hgothr-h	H	ipaexg.ttf %!PS IPAexGothic
+hgothr-v	V	ipaexg.ttf %!PS IPAexGothic
+hgothb-h	H	ipaexg.ttf %!PS IPAexGothic
+hgothb-v	V	ipaexg.ttf %!PS IPAexGothic
+hgotheb-h	H	ipaexg.ttf %!PS IPAexGothic
+hgotheb-v	V	ipaexg.ttf %!PS IPAexGothic
+hmgothr-h	H	ipaexg.ttf %!PS IPAexGothic
+hmgothr-v	V	ipaexg.ttf %!PS IPAexGothic
+
+% TEXT, JIS04
+hminln-h	H	ipaexm.ttf %!PS IPAexMincho
+hminln-v	V	ipaexm.ttf %!PS IPAexMincho
+hminrn-h	H	ipaexm.ttf %!PS IPAexMincho
+hminrn-v	V	ipaexm.ttf %!PS IPAexMincho
+hminbn-h	H	ipaexm.ttf %!PS IPAexMincho
+hminbn-v	V	ipaexm.ttf %!PS IPAexMincho
+hgothrn-h	H	ipaexg.ttf %!PS IPAexGothic
+hgothrn-v	V	ipaexg.ttf %!PS IPAexGothic
+hgothbn-h	H	ipaexg.ttf %!PS IPAexGothic
+hgothbn-v	V	ipaexg.ttf %!PS IPAexGothic
+hgothebn-h	H	ipaexg.ttf %!PS IPAexGothic
+hgothebn-v	V	ipaexg.ttf %!PS IPAexGothic
+hmgothrn-h	H	ipaexg.ttf %!PS IPAexGothic
+hmgothrn-v	V	ipaexg.ttf %!PS IPAexGothic
+
+% CID
+otf-cjml-h	Identity-H	SourceHanSerif-Light.otf
+otf-cjml-v	Identity-V	SourceHanSerif-Light.otf
+otf-cjmr-h	Identity-H	SourceHanSerif-Regular.otf
+otf-cjmr-v	Identity-V	SourceHanSerif-Regular.otf
+otf-cjmb-h	Identity-H	SourceHanSerif-Bold.otf
+otf-cjmb-v	Identity-V	SourceHanSerif-Bold.otf
+otf-cjgr-h	Identity-H	SourceHanSans-Regular.otf
+otf-cjgr-v	Identity-V	SourceHanSans-Regular.otf
+otf-cjgb-h	Identity-H	SourceHanSans-Bold.otf
+otf-cjgb-v	Identity-V	SourceHanSans-Bold.otf
+otf-cjge-h	Identity-H	SourceHanSans-Heavy.otf
+otf-cjge-v	Identity-V	SourceHanSans-Heavy.otf
+otf-cjmgr-h	Identity-H	SourceHanSans-Medium.otf
+otf-cjmgr-v	Identity-V	SourceHanSans-Medium.otf
+
+% Unicode 90JIS
+otf-ujml-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Light.otf
+otf-ujml-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Light.otf
+otf-ujmr-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Regular.otf
+otf-ujmr-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Regular.otf
+otf-ujmb-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Bold.otf
+otf-ujmb-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Bold.otf
+otf-ujgr-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Regular.otf
+otf-ujgr-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Regular.otf
+otf-ujgb-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Bold.otf
+otf-ujgb-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Bold.otf
+otf-ujge-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Heavy.otf
+otf-ujge-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Heavy.otf
+otf-ujmgr-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Medium.otf
+otf-ujmgr-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Medium.otf
+
+% Unicode JIS04
+otf-ujmln-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Light.otf
+otf-ujmln-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Light.otf
+otf-ujmrn-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Regular.otf
+otf-ujmrn-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Regular.otf
+otf-ujmbn-h	UniSourceHanSerifJP-UTF16-H	SourceHanSerif-Bold.otf
+otf-ujmbn-v	UniSourceHanSerifJP-UTF16-V	SourceHanSerif-Bold.otf
+otf-ujgrn-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Regular.otf
+otf-ujgrn-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Regular.otf
+otf-ujgbn-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Bold.otf
+otf-ujgbn-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Bold.otf
+otf-ujgen-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Heavy.otf
+otf-ujgen-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Heavy.otf
+otf-ujmgrn-h	UniSourceHanSansJP-UTF16-H	SourceHanSans-Medium.otf
+otf-ujmgrn-v	UniSourceHanSansJP-UTF16-V	SourceHanSans-Medium.otf

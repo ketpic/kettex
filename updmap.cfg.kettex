@@ -1,0 +1,11 @@
+# Options for updmap.
+
+dvipsPreferOutline true
+LW35 URWkb
+dvipsDownloadBase35 true
+pdftexDownloadBase14 true
+dvipdfmDownloadBase14 true
+
+kanjiEmbed kettex
+
+## end of file
