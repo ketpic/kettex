@@ -1,11 +1,6 @@
 #!/bin/bash
 ## KeTTeX.app internal starter script
 
-## bundle realpath command in Resources folder
-RESOURCESDIR=$(cd $(dirname $0); pwd)
-TLPATH=${RESOURCESDIR}/../../texlive/bin/x86_64-darwin
-export PATH=${TLPATH}:/usr/bin:/bin:/usr/sbin:/sbin
-
 cat<<EOF
 
 KeTTeX terminal
