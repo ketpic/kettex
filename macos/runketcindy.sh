@@ -2,69 +2,33 @@
 ## KeTTeX.app internal starter script
 
 ## bundle realpath command in Resources folder
-export PATH=$(dirname $0):/usr/bin:/bin:/usr/sbin:/sbin
+RESOURCESDIR=$(cd $(dirname $0); pwd)
+TLPATH=${RESOURCESDIR}/../../texlive/bin/x86_64-darwin
+export PATH=${TLPATH}:/usr/bin:/bin:/usr/sbin:/sbin
 
-TLPATH=$(realpath $(dirname $0)/../../texlive/bin/x86_64-darwin)
-export PATH=${TLPATH}:${PATH}
+cat<<EOF
 
-## copy KetCindyPlugin.jar to Cinderella2 PlugIns folder
-# __cindybin=/Applications/Cinderella2.app/Contents/MacOS/Cinderella2
-CINDYPLUG=/Applications/Cinderella2.app/Contents/PlugIns
-KetCdyJar=`kpsewhich -format=texmfscripts KetCindyPlugin.jar`
-if [ ! -d ${CINDYPLUG} ]
-then
-    osascript -e "display dialog \"Cannot find Cinderella2 PlugIns folder: ${CINDYPLUG}\""
-    exit 1
-fi
-if [ -z "${KetCdyJar}" ]
-then
-    osascript -e "display dialog \"Cannot find ${KetCdyJar}!\""
-    exit 1
-fi
-## try to install the jar when cannot find the jar in the plugins folder
-if [ ! -f ${CINDYPLUG}/KetCindyPlugin.jar ]
-then
-    cp -a ${KetCdyJar} ${CINDYPLUG}/ ||:
-fi
+KeTTeX terminal
 
-## output system-wide settings 
-KETCINDYSCRIPTS=$(dirname $(kpsewhich -format=texmfscripts setketcindy.txt))
-sysdirhead=${CINDYPLUG}/ketcindy.ini
-if [ ! -f ${sysdirhead} ]; then
-    cat<<EOF>${sysdirhead}
-PathThead="${TLPATH}/";
-//Homehead="/Users";
-Dirhead=Dircdy;
-Dirwork=gethome()+pathsep()+"ketcindy";
-Dircdy=Dirwork;
-//Dirhead=gettexmfdist()+pathsep()+"scripts"+pathsep()+"ketcindy";
-Dirhead="${KETCINDYSCRIPTS}";
-setdirectory(Dirhead);
-import("setketcindy.txt");
-import("ketoutset.txt");
-setdirectory(Dirwork);
+This is constructed from the following components:
+ * TeX Live
+   * uplatex:	$(uplatex --version | head -n 1)
+   * dvipdfmx:	$(dvipdfmx --version | head -n 1 | sed -e "s,^This is ,," -e "s,by.*,,")
+   * lualatex:	$(lualatex --version | head -n 1)
 EOF
-fi
 
-# ## output user-wide settings
-# userdirhead=${HOME}/ketcindyhead.txt
-# if [ ! -f ${userdirhead} ]; then
-#     cat<<EOF>${userdirhead}
-# Dirfile=gethome()+"/ketcindy";
-# PathT=PathThead+"uplatex";
-# Mackc="sh";
-# // Pathpdf="preview";
-# // Pathpdf="skim";
-# EOF
-# fi
+## set aliases
+alias eng='LANG=C LANGUAGE=C LC_ALL=C'
 
-## copy manuals and samples
-userketcindydir=${HOME}/ketcindy
-if [ ! -d ${userketcindydir} ]; then
-    cp -a $(kpsewhich --var-value=TEXMFDIST)/doc/support/ketcindy ${userketcindydir}
-    rm -rf ${userketcindydir}/README.TeXLive ${userketcindydir}/source
-fi
+alias ls='ls -F -G'
+alias ll='ls -la -G'
+alias la='ls -a -G'
 
-## Then, now just kick the ketcindy starter script
-ketcindy $@ || \
-    osascript -e "display dialog \"$(ketcindy $@ 2>&1)\""
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+## restrict logout with Ctrl-d
+export IGNOREEOF=25
+
+# end of file
