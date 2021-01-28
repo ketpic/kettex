@@ -14,7 +14,7 @@ on main()
             set appPath to (path to current application as text)
             set appPath to quoted form of (POSIX path of appPath)
             set TLPath to appPath & "texlive/bin/x86_64-darwin"
-            do script "export PATH=" & TLPath & ":/usr/bin:/bin:/usr/sbin:/sbin;  . " & appPath & "/Contents/Resources/runketcindy.sh; cd \${HOMEDIR}"
+            do script "export PATH=" & TLPath & ":/usr/bin:/bin:/usr/sbin:/sbin; cd \${HOMEDIR};  . " & appPath & "/Contents/Resources/runketcindy.sh"
         end tell
     end try
 end main
@@ -25,8 +25,13 @@ end run
 __APPLESCRIPT__
 
 ## replace default icon with our project icon
-cp -fva ${BUILDROOT}/../artwork/ketcindy.icns \
-   ${BUILDROOT}/${app_name}/Contents/Resources/droplet.icns
+[ -f ${BUILDROOT}/${app_name}/Contents/Resources/droplet.icns ] && \
+    cp -fva ${BUILDROOT}/../artwork/ketcindy.icns \
+       ${BUILDROOT}/${app_name}/Contents/Resources/droplet.icns
+
+[ -f ${BUILDROOT}/${app_name}/Contents/Resources/applet.icns ] && \
+    cp -fva ${BUILDROOT}/../artwork/ketcindy.icns \
+       ${BUILDROOT}/${app_name}/Contents/Resources/applet.icns
 
 ## install internal starter script
 cp -fva ${BUILDROOT}/runketcindy.sh \
