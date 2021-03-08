@@ -24,7 +24,7 @@ fi
 KETTEXPKG=KeTTeX-${TARGETOS}-$(date +%Y%m%d)
 
 ## set given tlnet repository for TLYY installation
-TLNET=${TLNET:-http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz}                # http://texlive.texjp.org/2020/tlnet
+TLNET=${TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.texjp.org/2020/tlnet
 ## set usual main tlnet repository
 MAIN_TLNET=${MAIN_TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.texjp.org/2020/tlnet
 
