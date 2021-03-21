@@ -1,0 +1,33 @@
+@echo off
+
+::: initial variables
+set KETTEXROOT=C:\kettex
+set TEMPKETTEXINST=%TEMP%\kettexinst
+set PATH=C:%TEMP%\kettexinst\texinstwin;%SystemRoot%\system32;%SystemRoot%;
+
+::: check C:\kettex
+if exist %KETTEXROOT%   goto :KETTEXEXISTS
+
+::: prepare installation under %TEMP%
+echo preparing KeTTeX installation in %TEMPKETTEXINST% ...
+rmdir /S /Q %TEMPKETTEXINST%
+mkdir %TEMPKETTEXINST%
+move @@KETTEXPKG@@.tar.zst %TEMPKETTEXINST%
+move texinstwin %TEMPKETTEXINST%
+
+::: start installation
+echo installing KeTTeX in %KETTEXROOT% ...
+cd C:\
+tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst
+
+
+goto :END
+
+:KETTEXEXISTS
+echo %KETTEXROOT% already exists!
+echo kettexinst.cmd do not install @@KETTEXPKG@@
+goto :END
+
+:END
+::: cleanup %TEMPKETTEXINST%
+rmdir /S /Q %TEMPKETTEXINST%
