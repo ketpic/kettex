@@ -159,7 +159,7 @@ case ${TARGETOS} in
         if [ $WITH_WINDOWS -eq 1 ]; then
             $__sed -e "s,@@KETTEXPKG@@,${KETTEXPKG}," \
                    windows/kettexinst.cmd.in >${KETTEXTEMP}/kettexinst.cmd
-            $__mv ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
+            mv ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
 
             ## copy texinstwin.zip
             mkdir -p ${KETTEXTEMP}/texinstwin
