@@ -159,7 +159,7 @@ case ${TARGETOS} in
         if [ $WITH_WINDOWS -eq 1 ]; then
             $__sed -e "s,@@KETTEXPKG@@,${KETTEXPKG}," \
                    windows/kettexinst.cmd.in >${KETTEXTEMP}/kettexinst.cmd
-            $__cp ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
+            $__mv ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
 
             ## copy texinstwin.zip
             mkdir -p ${KETTEXTEMP}/texinstwin
@@ -169,9 +169,11 @@ case ${TARGETOS} in
             unzip texinstwin.zip -d ${KETTEXTEMP}/texinstwin
 
             (cd ${KETTEXTEMP}/
-             zip -9 -r $(dirname $0)/${KETTEXPKG}.zip \
+             zip -9 -r ${KETTEXPKG}.zip \
                  kettexinst.cmd ${KETTEXPKG}.tar.zst texinstwin/*
             )
+            mv ${KETTEXTEMP}/${KETTEXPKG}.zip .
+            echo $(basename $0): built ${KETTEXPKG}.zip
         fi
         ;;
 
