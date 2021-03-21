@@ -39,6 +39,7 @@ case $(uname) in
         __sed=gsed
         __tar="gtar --owner=0 --group=0"
         __xz="pixz -9 -p4"
+        __zstd="pzstd -9 -p4"
         ;;
     Linux)
         export PATH=${KETTEXROOT}/bin/x86_64-linux:/usr/bin:/bin
@@ -47,6 +48,7 @@ case $(uname) in
         __sed=sed
         __tar="tar --owner=0 --group=0"
         __xz="pixz -9 -p4"
+        __zstd="pzstd -9 -p4"
         ;;
     *)
         echo unsuported: $(uname)
@@ -81,10 +83,10 @@ $__tar -C ${KETTEXROOT}/install-tl-unx --strip-components=1 -xf install-tl-unx.t
 
 ## deploy the installation profile texlive.profile for KeTTeX
 mkdir -p ${KETTEXROOT}/install-tl-unx
-sed -e "s,@@WITH_WINDOWS@@,${WITH_WINDOWS}," \
-    -e "s,@@WITH_LINUX@@,${WITH_LINUX}," \
-    -e "s,@@TEXDIR@@,${KETTEXROOT}," \
-    kettex.profile.in >${KETTEXROOT}/install-tl-unx/texlive.profile
+$__sed -e "s,@@WITH_WINDOWS@@,${WITH_WINDOWS}," \
+       -e "s,@@WITH_LINUX@@,${WITH_LINUX}," \
+       -e "s,@@TEXDIR@@,${KETTEXROOT}," \
+       kettex.profile.in >${KETTEXROOT}/install-tl-unx/texlive.profile
 
 perl ${KETTEXROOT}/install-tl-unx/install-tl \
              --profile ${KETTEXROOT}/install-tl-unx/texlive.profile \
@@ -102,53 +104,82 @@ $__sed -i -e "s,depend opt_location:${TLNET},depend opt_location:${MAIN_TLNET},"
 ##
 ## BUILDING IMAGE ARCHIVE
 ## ==============================
+case ${TARGETOS} in
+    ## For Mac OS X, make KeTTeX.app which you can deploy everywhere on your system
+    ## --------------------
+    macos)
+        $__cp macos/KeTTeX.app ${KETTEXTEMP}/kettex/
+        mv ${KETTEXROOT} ${KETTEXAPP}/
 
-##
-## For Mac OS X, make KeTTeX.app which you can deploy everywhere on your system
-## --------------------
-if [ $WITH_MACOS -eq 1 ]; then
-    $__cp macos/KeTTeX.app ${KETTEXTEMP}/kettex/
-    mv ${KETTEXROOT} ${KETTEXAPP}/
+        ## make eazy layout of dmg-style installer
+        ## drag and drop: KeTTeX.app ===> /Applications/
+        (cd ${KETTEXTEMP}/kettex
+         ln -s /Applications .
+        )
 
-    ## make eazy layout of dmg-style installer
-    ## drag and drop: KeTTeX.app ===> /Applications/
-    (cd ${KETTEXTEMP}/kettex
-     ln -s /Applications .
-    )
+        ## make ULFO-formatted dmg.
+        ## You can extract the one on macOS 10.11+ (El Capitan or higher version)
+        # hdiutil_encopts="-format UDZO -imagekey zlib-level=9"
+        hdiutil_encopts="-format ULFO"  ##<= macOS 10.11+
+        hdiutil create -ov -srcfolder ${KETTEXTEMP}/kettex \
+                -fs HFS+ ${hdiutil_encopts} \
+                -volname "KeTTeX" ${KETTEXPKG}.dmg
+        echo $(basename $0): built ${KETTEXPKG}.dmg
+        ;;
 
-    ## make ULFO-formatted dmg.
-    ## You can extract the one on macOS 10.11+ (El Capitan or higher version)
-    # hdiutil_encopts="-format UDZO -imagekey zlib-level=9"
-    hdiutil_encopts="-format ULFO"  ##<= macOS 10.11+
-    hdiutil create -ov -srcfolder ${KETTEXTEMP}/kettex \
-            -fs HFS+ ${hdiutil_encopts} \
-            -volname "KeTTeX" ${KETTEXPKG}.dmg
-    echo $(basename $0): built ${KETTEXPKG}.dmg
-else
-##
-## For other platform (Windows/Linux), make tarball image
-## --------------------
+    ##
+    ## For other platform (Windows/Linux), make tarball image
+    ## --------------------
+    windows|linux)
+        ## dropped x86_64-darwin platform
+        ## # $ tlmgr platform remove x86_64-darwin
+        ## You are running on platform x86_64-darwin, you cannot remove that one!
+        ## tlmgr: action platform returned an error; continuing.
+        ## tlmgr: An error has occurred. See above messages. Exiting.
+        ## so, forcely remove the one
+        rm -rf ${KETTEXROOT}/bin/x86_64-darwin
 
-    ## dropped x86_64-darwin platform
-## # $ tlmgr platform remove x86_64-darwin
-## You are running on platform x86_64-darwin, you cannot remove that one!
-## tlmgr: action platform returned an error; continuing.
-## tlmgr: An error has occurred. See above messages. Exiting.
-    ## so, forcely remove the one
-    rm -rf ${KETTEXROOT}/bin/x86_64-darwin
+        ## For Windows, replace symbolic-linked map file with hard copy respectively
+        rm -f ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/psfonts.map
+        cp -a ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/{psfonts_t1,psfonts}.map
+        rm -f ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+        cp -a ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/{pdftex_dl14,pdftex}.map
+        ## and check other symbolic-linked files.
+        find ${KETTEXROOT} -type l
 
-    ## For Windows, replace symbolic-linked map file with hard copy respectively
-    rm -f ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/psfonts.map
-    cp -a ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/{psfonts_t1,psfonts}.map
-    rm -f ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-    cp -a ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/{pdftex_dl14,pdftex}.map
-    ## and check other symbolic-linked files.
-    find ${KETTEXROOT} -type l
+        if [ $WITH_WINDOWS -eq 1 ]; then
+            $__cp windows/kettex.cmd ${KETTEXTEMP}/kettex/
+        fi
 
-    ## Finally, build tar+xz image archive and calculate SHA-1 hash of the one
-    $__tar -C ${KETTEXTEMP} -cf - kettex | $__xz >${KETTEXPKG}.tar.xz
-    echo $(basename $0): built ${KETTEXPKG}.tar.xz
-fi
+        ## Finally, build tar+zstd image archive
+        $__tar -C ${KETTEXTEMP} -cf - kettex | $__zstd >${KETTEXPKG}.tar.zst
+        echo $(basename $0): built ${KETTEXPKG}.tar.zst
+
+        ## for Windows
+        if [ $WITH_WINDOWS -eq 1 ]; then
+            $__sed -e "s,@@KETTEXPKG@@,${KETTEXPKG}," \
+                   windows/kettexinst.cmd.in >${KETTEXTEMP}/kettexinst.cmd
+            $__cp ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
+
+            ## copy texinstwin.zip
+            mkdir -p ${KETTEXTEMP}/texinstwin
+            if [ ! -f texinstwin.zip ]; then
+                wget http://mirror.ctan.org/systems/win32/w32tex/texinstwin.zip
+            fi
+            unzip texinstwin.zip -d ${KETTEXTEMP}/texinstwin
+
+            (cd ${KETTEXTEMP}/
+             zip -9 -r $(dirname $0)/${KETTEXPKG}.zip \
+                 kettexinst.cmd ${KETTEXPKG}.tar.zst texinstwin/*
+            )
+        fi
+        ;;
+
+    *)
+        echo unsuported: $(uname)
+        exit 1
+        ;;
+esac
 
 echo $(basename $0): finished
 
