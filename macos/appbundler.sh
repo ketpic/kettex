@@ -13,8 +13,9 @@ on main()
         tell application "Terminal"
             set appPath to (path to current application as text)
             set appPath to quoted form of (POSIX path of appPath)
-            set TLPath to appPath & "texlive/bin/x86_64-darwin"
-            do script "export PATH=" & TLPath & ":/usr/bin:/bin:/usr/sbin:/sbin; cd \${HOMEDIR};  . " & appPath & "/Contents/Resources/runketcindy.sh"
+            set TLIntelPath to appPath & "texlive/bin/x86_64-darwin"
+            set TLArmPath   to appPath & "texlive/bin/universal-darwin"
+            do script "export PATH=" & TLArmPath & ":" & TLIntelPath & ":/usr/bin:/bin:/usr/sbin:/sbin; cd \${HOMEDIR};  . " & appPath & "/Contents/Resources/runketcindy.sh"
         end tell
     end try
 end main
