@@ -128,18 +128,18 @@ case ${TARGETOS} in
         ;;
 
     ##
-    ## For other platform (Windows/Linux), make tarball image
+    ## For other platform (Windows/Linux), make tar+zstandard image
     ## --------------------
     windows|linux)
         ## dropped Darwin platforms
-        ## # $ tlmgr platform remove x86_64-darwin
+        ##     $ tlmgr platform remove x86_64-darwin
         ## You are running on platform x86_64-darwin, you cannot remove that one!
-        ## tlmgr: action platform returned an error; continuing.
-        ## tlmgr: An error has occurred. See above messages. Exiting.
+        ##     tlmgr: action platform returned an error; continuing.
+        ##     tlmgr: An error has occurred. See above messages. Exiting.
         ## so, forcely remove the one
         rm -rf ${KETTEXROOT}/bin/{universal,x86_64}-darwin
 
-        ## For Windows, replace symbolic-linked map file with hard copy respectively
+        ## replace symbolic-linked map file with hard copy respectively,
         rm -f ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/psfonts.map
         cp -a ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/{psfonts_t1,psfonts}.map
         rm -f ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/pdftex.map
