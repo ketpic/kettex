@@ -6,6 +6,7 @@ all:
 
 clean:
 	rm -rf $(KETTEXTEMP)
+	find . -name "*~" -delete
 
 macos: macos/KeTTeX.app
 	TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
