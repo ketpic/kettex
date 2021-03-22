@@ -8,6 +8,10 @@ clean:
 	rm -rf $(KETTEXTEMP)
 	find . -name "*~" -delete
 
+distclean: clean
+	rm -f install-tl-unx.tar.gz
+	rm -f texinstwin.zip
+
 macos: macos/KeTTeX.app
 	TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
 
@@ -21,6 +25,6 @@ windows:
 linux:
 	WITH_LINUX=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
 
-.PHONY: clean macos windows linux
+.PHONY: all clean distclean macos windows linux
 
 ## end of file
