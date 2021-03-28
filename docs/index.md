@@ -1,37 +1,25 @@
-## Welcome to GitHub Pages
+## KeTTeXのインストール
 
-You can use the [editor on GitHub](https://github.com/ketpic/kettex/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+KeTTeXのリリース一覧[Releases - ketpic/kettex](https://github.com/ketpic/kettex/releases)から、各OSの最新版KeTTeXをダウンロードします。
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+ * Windows：KeTTeX-windows-YYYYMMDD.zip
+ * macOS：KeTTeX-macos-YYYYMMDD.dmg
+ * Linux：KeTTeX-linux-YYYYMMDD.tar.zst
 
-### Markdown
+### Windows
+KeTTeX-windows-YYYYMMDD.zipを解凍して、同梱されているKeTTeX for Windowsの簡易インストーラーkettexinst.cmdを管理者権限で実行すると、`C:\kettex`にKeTTeX for Windowsがインストールされます。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+なお、`C:\kettex\kettex.cmd` を実行すると、`C:\kettex`のTeX Live環境のみが使えるようになったコマンドプロンプトが立ち上がります。
 
-```markdown
-Syntax highlighted code block
+<!-- TODO: スクリーンショットとともに、インストール方法を説明する -->
 
-# Header 1
-## Header 2
-### Header 3
+### macOS
+macOS：KeTTeX-macos-YYYYMMDD.dmgを開いて、同梱されているKeTTeX for macOSのアプリケーションKeTTeX.appをアプリケーションフォルダ`/Applications`にインストールします。
 
-- Bulleted
-- List
+なお、`/Applications/KeTTeX.app`を実行すると、KeTTeX.appのTeX Live環境のみが使えるようになったターミナルが立ち上がります。
 
-1. Numbered
-2. List
+<!-- TODO: スクリーンショットとともに、インストール方法を説明する -->
 
-**Bold** and _Italic_ and `Code` text
+### Linux
+KeTTeX-linux-YYYYMMDD.tar.zstを然るべきところに展開します。
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ketpic/kettex/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
