@@ -1,6 +1,6 @@
 #!/bin/bash -x
-
-set -e
+set -euxo pipefail
+cd "$(dirname "$0")"
 
 ##
 ## INITIALIZATION
@@ -96,7 +96,7 @@ perl ${KETTEXROOT}/install-tl-unx/install-tl \
 tlmgr install ketcindy
 
 # uninstall some packages to reduce disk space
-# tlmgr uninstall jlreq-deluxe
+
 
 ## replace: ${TLNET} -> ${MAIN_TLNET}
 $__sed -i -e "s,depend opt_location:${TLNET},depend opt_location:${MAIN_TLNET}," ${KETTEXROOT}/tlpkg/texlive.tlpdb
