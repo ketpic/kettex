@@ -6,6 +6,7 @@ all:
 
 clean:
 	rm -rf $(KETTEXTEMP)
+	rm -f installation.profile
 	find . -name "*~" -delete
 
 distclean: clean
