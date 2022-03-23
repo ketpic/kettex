@@ -27,6 +27,7 @@ TEXMFCONFIG @@TEXDIR@@/texmf-config
 binary_x86_64-darwin 1
 binary_win32 @@WITH_WINDOWS@@
 binary_x86_64-linux @@WITH_LINUX@@
+binary_amd64-freebsd @@WITH_FREEBSD@@
 #
 ## set installation scheme and custom categories
 selected_scheme scheme-minimal

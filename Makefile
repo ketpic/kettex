@@ -26,6 +26,9 @@ windows:
 linux:
 	WITH_LINUX=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
 
-.PHONY: all clean distclean macos windows linux
+freebsd:
+	WITH_FREEBSD=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
+
+.PHONY: all clean distclean macos windows linux freebsd
 
 ## end of file

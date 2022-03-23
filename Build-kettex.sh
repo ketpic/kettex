@@ -14,12 +14,14 @@ KETTEXAPP=${KETTEXAPP:-${KETTEXTEMP}/kettex/KeTTeX.app}
 ## set target platform
 WITH_WINDOWS=${WITH_WINDOWS:-0}
 WITH_LINUX=${WITH_LINUX:-0}
+WITH_FREEBSD=${WITH_FREEBSD:-0}
 WITH_MACOS=1 ## default: build for Mac OS X
 TARGETOS=macos
-if [ $(( ${WITH_WINDOWS}+${WITH_LINUX} )) -ge 1 ]; then
+if [ $(( ${WITH_WINDOWS}+${WITH_LINUX}+${WITH_FREEBSD} )) -ge 1 ]; then
    WITH_MACOS=0
    [ ${WITH_WINDOWS} -eq 1 ] && TARGETOS=windows
    [ ${WITH_LINUX} -eq 1 ]   && TARGETOS=linux
+   [ ${WITH_FREEBSD} -eq 1 ]   && TARGETOS=freebsd
 fi
 KETTEXPKG=KeTTeX-${TARGETOS}-$(date +%Y%m%d)
 
@@ -85,6 +87,7 @@ $__tar -C ${KETTEXROOT}/install-tl-unx --strip-components=1 -xf install-tl-unx.t
 mkdir -p ${KETTEXROOT}/install-tl-unx
 $__sed -e "s,@@WITH_WINDOWS@@,${WITH_WINDOWS}," \
        -e "s,@@WITH_LINUX@@,${WITH_LINUX}," \
+       -e "s,@@WITH_FREEBSD@@,${WITH_FREEBSD}," \
        -e "s,@@TEXDIR@@,${KETTEXROOT}," \
        kettex.profile.in >${KETTEXROOT}/install-tl-unx/texlive.profile
 
@@ -130,7 +133,7 @@ case ${TARGETOS} in
     ##
     ## For other platform (Windows/Linux), make tar+zstandard image
     ## --------------------
-    windows|linux)
+    windows|linux|freebsd)
         ## dropped Darwin platforms
         ##     $ tlmgr platform remove x86_64-darwin
         ## You are running on platform x86_64-darwin, you cannot remove that one!
