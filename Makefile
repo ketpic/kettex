@@ -1,4 +1,4 @@
-TLNET=http://texlive.texjp.org/2020/tlnet
+TLNET=http://texlive.texjp.org/2021/tlnet
 KETTEXTEMP=$(shell pwd)/Work
 
 all:
