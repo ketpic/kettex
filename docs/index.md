@@ -2,9 +2,10 @@
 
 KeTTeXのリリース一覧[Releases - ketpic/kettex](https://github.com/ketpic/kettex/releases)から、各OSの最新版KeTTeXをダウンロードします。
 
- * Windows：`KeTTeX-windows-YYYYMMDD.zip`
- * macOS：`KeTTeX-macos-YYYYMMDD.dmg`
- * Linux：`KeTTeX-linux-YYYYMMDD.tar.zst`
+ * Windows `win32`：`KeTTeX-windows-YYYYMMDD.zip`
+ * macOS `universal-darwin` (`arm64`, `x86_64`)：`KeTTeX-macos-YYYYMMDD.dmg`
+ * Linux `x86_64-linux`：`KeTTeX-linux-YYYYMMDD.tar.zst`
+ * FreeBSD `amd64-freebsd`：`KeTTeX-freebsd-YYYYMMDD.tar.zst`
 
 ### Windows
 `KeTTeX-windows-YYYYMMDD.zip`を解凍して、同梱されているKeTTeX for Windowsの簡易インストーラー`kettexinst.cmd`を管理者権限で実行すると、`C:\kettex`にKeTTeX for Windowsがインストールされます。
@@ -30,3 +31,6 @@ sudo xattr -r -d com.apple.quarantine    /Applications/KeTTeX.app/
 
 ### Linux
 `KeTTeX-linux-YYYYMMDD.tar.zst` を然るべきところに展開します。
+
+### FreeBSD
+`KeTTeX-freebsd-YYYYMMDD.tar.zst` を然るべきところに展開します。
