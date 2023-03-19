@@ -35,7 +35,7 @@ export LANG=C LANGUAGE=C LC_ALL=C
 
 case $(uname) in
     Darwin)
-        export PATH=${KETTEXROOT}/bin/universal-darwin:${KETTEXROOT}/bin/x86_64-darwin:/usr/local/bin:/usr/bin:/bin
+        export PATH=${KETTEXROOT}/bin/universal-darwin:${KETTEXROOT}/bin/x86_64-darwin:/opt/homebrew//bin:/usr/bin:/bin
 
         __cp="cp -avf"
         __sed=gsed
