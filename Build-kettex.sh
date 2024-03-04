@@ -83,26 +83,68 @@ if [ ! -f install-tl-unx.tar.gz ]; then
 fi
 $__tar -C ${KETTEXROOT}/install-tl-unx --strip-components=1 -xf install-tl-unx.tar.gz
 
-## deploy the installation profile texlive.profile for KeTTeX
+## deploy the installation profile for KeTTeX
 mkdir -p ${KETTEXROOT}/install-tl-unx
 $__sed -e "s,@@WITH_WINDOWS@@,${WITH_WINDOWS}," \
        -e "s,@@WITH_LINUX@@,${WITH_LINUX}," \
        -e "s,@@WITH_FREEBSD@@,${WITH_FREEBSD}," \
        -e "s,@@TEXDIR@@,${KETTEXROOT}," \
-       kettex.profile.in >${KETTEXROOT}/install-tl-unx/texlive.profile
+       kettex.profile.in >${KETTEXROOT}/install-tl-unx/kettex.profile
 
 perl ${KETTEXROOT}/install-tl-unx/install-tl \
-             --profile ${KETTEXROOT}/install-tl-unx/texlive.profile \
+             --profile ${KETTEXROOT}/install-tl-unx/kettex.profile \
              --repository ${TLNET}
 
-# install ketcindy package
-tlmgr install ketcindy
+# install additional packages
+tlmgr install ketcindy \
+    algorithms algorithmicx \
+    bbold bbold-type1 \
+    ebgaramond \
+    fontawesome \
+    inconsolata \
+    mnsymbol \
+    physics \
+    sourcecodepro sourcesanspro \
+    systeme \
+    ulem \
+    roboto \
+    stix2-otf stix2-type1 \
+    noto-emoji
 
 # uninstall some packages to reduce disk space
 
 
+## setup suitable texmf.cnf
+case ${TARGETOS} in
+    macos|linux|freebsd)
+        printf "%s\n" \
+               "texmf_casefold_search = 0" \
+               >>${KETTEXROOT}/texmf.cnf
+        ;;
+esac
+printf "%s\n" \
+       "font_mem_size = 16000000 " \
+       "font_max = 18000         " \
+       "ent_str_size = 2000      " \
+       "error_line = 254         " \
+       "half_error_line = 238    " \
+       "max_print_line = 1048576 " \
+       >>${KETTEXROOT}/texmf.cnf
+
 ## replace: ${TLNET} -> ${MAIN_TLNET}
 $__sed -i -e "s,depend opt_location:${TLNET},depend opt_location:${MAIN_TLNET}," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+
+case ${TARGETOS} in
+    windows)
+        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:windows," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        ;;
+    linux)
+        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:x86_64-linux aarch64-linux," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        ;;
+    freebsd)
+        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:amd64-freebsd," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        ;;
+esac
 
 ##
 ## BUILDING IMAGE ARCHIVE
