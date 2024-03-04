@@ -95,6 +95,9 @@ perl ${KETTEXROOT}/install-tl-unx/install-tl \
              --profile ${KETTEXROOT}/install-tl-unx/kettex.profile \
              --repository ${TLNET}
 
+## drop installer
+rm -rf ${KETTEXROOT}/install-tl-unx
+
 # install additional packages
 tlmgr install ketcindy \
     algorithms algorithmicx \
@@ -136,13 +139,13 @@ $__sed -i -e "s,depend opt_location:${TLNET},depend opt_location:${MAIN_TLNET},"
 
 case ${TARGETOS} in
     windows)
-        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:windows," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:windows," ${KETTEXROOT}/tlpkg/texlive.tlpdb
         ;;
     linux)
-        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:x86_64-linux aarch64-linux," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:x86_64-linux aarch64-linux," ${KETTEXROOT}/tlpkg/texlive.tlpdb
         ;;
     freebsd)
-        $__sed -i -e "s,depend setting_available_architectures:universal-darwin,depend setting_available_architectures:amd64-freebsd," ${KETTEXROOT}/tlpkg/texlive.tlpdb
+        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:amd64-freebsd," ${KETTEXROOT}/tlpkg/texlive.tlpdb
         ;;
 esac
 
