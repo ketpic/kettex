@@ -11,7 +11,7 @@ KETTEXTEMP=${KETTEXTEMP:-$(pwd)/Work}
 KETTEXROOT=${KETTEXROOT:-${KETTEXTEMP}/kettex/texlive}
 KETTEXAPP=${KETTEXAPP:-${KETTEXTEMP}/kettex/KeTTeX.app}
 
-## set target platform
+## set target OS
 WITH_WINDOWS=${WITH_WINDOWS:-0}
 WITH_LINUX=${WITH_LINUX:-0}
 WITH_FREEBSD=${WITH_FREEBSD:-0}
@@ -24,6 +24,14 @@ if [ $(( ${WITH_WINDOWS}+${WITH_LINUX}+${WITH_FREEBSD} )) -ge 1 ]; then
    [ ${WITH_FREEBSD} -eq 1 ]   && TARGETOS=freebsd
 fi
 KETTEXPKG=KeTTeX-${TARGETOS}-$(date +%Y%m%d)
+
+## set available platform(s) for the target OS
+TARGETOS_ARCHS=universal-darwin
+case ${TARGETOS} in
+    windows)	TARGETOS_ARCHS='windows' ;;
+    linux)		TARGETOS_ARCHS='x86_64-linux aarch64-linux' ;;
+    freebsd)	TARGETOS_ARCHS='amd64-freebsd' ;;
+esac
 
 ## set given tlnet repository for TLYY installation
 TLNET=${TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.texjp.org/2020/tlnet
@@ -134,20 +142,11 @@ printf "%s\n" \
        "max_print_line = 1048576 " \
        >>${KETTEXROOT}/texmf.cnf
 
-## replace: ${TLNET} -> ${MAIN_TLNET}
-$__sed -i -e "s,depend opt_location:${TLNET},depend opt_location:${MAIN_TLNET}," ${KETTEXROOT}/tlpkg/texlive.tlpdb
-
-case ${TARGETOS} in
-    windows)
-        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:windows," ${KETTEXROOT}/tlpkg/texlive.tlpdb
-        ;;
-    linux)
-        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:x86_64-linux aarch64-linux," ${KETTEXROOT}/tlpkg/texlive.tlpdb
-        ;;
-    freebsd)
-        $__sed -i -e "s,depend setting_available_architectures:.*,depend setting_available_architectures:amd64-freebsd," ${KETTEXROOT}/tlpkg/texlive.tlpdb
-        ;;
-esac
+## modify texlive.tlpdb
+$__sed -i \
+       -e "s,\(depend opt_location:\).*,\1${MAIN_TLNET}," \
+       -e "s,\(depend setting_available_architectures:\).*,\1${TARGETOS_ARCHS}," \
+       ${KETTEXROOT}/tlpkg/texlive.tlpdb
 
 ##
 ## BUILDING IMAGE ARCHIVE
