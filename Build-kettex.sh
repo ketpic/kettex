@@ -168,9 +168,12 @@ case ${TARGETOS} in
         ## make ULFO-formatted dmg.
         ## You can extract the one on macOS 10.11+ (El Capitan or higher version)
         # hdiutil_encopts="-format UDZO -imagekey zlib-level=9"
-        hdiutil_encopts="-format ULFO"  ##<= macOS 10.11+
+        hdiutil_encopts="-fs HFS+ -format ULFO"  ##<= macOS 10.11+ only (fastest, smallest)
+        # hdiutil_encopts="-fs APFS -format ULFO"  ##<= macOS 10.13+ only
+        # hdiutil_encopts="-fs HFS+ -format ULMO"  ##<= macOS 10.15+ only
+        # hdiutil_encopts="-fs APFS -format ULMO"  ##<= macOS 10.15+ only
         hdiutil create -ov -srcfolder ${KETTEXTEMP}/kettex \
-                -fs HFS+ ${hdiutil_encopts} \
+                ${hdiutil_encopts} \
                 -volname "KeTTeX" ${KETTEXPKG}.dmg
         echo $(basename $0): built ${KETTEXPKG}.dmg
         ;;
@@ -211,10 +214,10 @@ case ${TARGETOS} in
 
             ## copy texinstwin.zip
             mkdir -p ${KETTEXTEMP}/texinstwin
-            if [ ! -f texinstwin.zip ]; then
+            if [ ! -f windows/texinstwin.zip ]; then
                 wget http://mirror.ctan.org/systems/win32/w32tex/texinstwin.zip
             fi
-            unzip texinstwin.zip -d ${KETTEXTEMP}/texinstwin
+            unzip windows/texinstwin.zip -d ${KETTEXTEMP}/texinstwin
 
             (cd ${KETTEXTEMP}/
              zip -9 -r ${KETTEXPKG}.zip \
