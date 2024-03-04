@@ -45,7 +45,7 @@ move texinstwin %TEMPKETTEXINST%  >nul 2>&1
 echo installing KeTTeX in %KETTEXROOT% ... (It will take a while.)
 cd %KETTEXROOT%  >nul 2>&1
 cd ..  >nul 2>&1
-tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst
+tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst  --totals --checkpoint=1000 --checkpoint-action=dot
 
 ::: initialize
 set PATH=%KETTEXROOT%\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
