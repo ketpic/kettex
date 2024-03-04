@@ -23,8 +23,8 @@ TEXMFHOME @@TEXDIR@@/texmf-local
 TEXMFVAR @@TEXDIR@@/texmf-var
 TEXMFCONFIG @@TEXDIR@@/texmf-config
 #
-## build both kettex for Windows/Mac OS X on Mac OS X
-binary_x86_64-darwin 1
+## build kettex for multiple OSes
+binary_universal-darwin 1
 binary_windows @@WITH_WINDOWS@@
 binary_aarch64-linux @@WITH_LINUX@@
 binary_x86_64-linux @@WITH_LINUX@@
@@ -55,9 +55,9 @@ option_menu_integration 0
 option_path 0
 option_post_code 1
 option_src 0
-option_sys_bin /usr/local/bin
-option_sys_info /usr/local/share/info
-option_sys_man /usr/local/share/man
-option_w32_multi_user 1
+#option_sys_bin /usr/local/bin
+#option_sys_info /usr/local/share/info
+#option_sys_man /usr/local/share/man
+option_w32_multi_user @@WITH_WINDOWS@@
 option_write18_restricted 1
 portable 0
