@@ -48,7 +48,7 @@ cd ..  >nul 2>&1
 tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst
 
 ::: initialize
-set PATH=C:\kettex\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
+set PATH=%KETTEXROOT%\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
 tlmgr platform set windows
 fmtutil-sys --all
 goto :END
@@ -63,7 +63,7 @@ goto :EOFF
 :KETTEXEXISTS
 echo %KETTEXROOT% already exists!
 echo kettexinst.cmd do not install @@KETTEXPKG@@ in %KETTEXROOT%
-goto :END
+goto :EOFF
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :END
