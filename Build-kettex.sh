@@ -123,7 +123,9 @@ tlmgr install ketcindy \
     noto-emoji
 
 # uninstall some packages to reduce disk space
-
+tlmgr uninstall --force \
+      $(tlmgr list --only-installed --data 'name' | grep -e 'tex4ht' -e 'make4ht' -e 'tex4ebook' -e 'tlcockpit' -e 'xindy' -e 'xindex') \
+    ||:
 
 ## setup suitable texmf.cnf
 case ${TARGETOS} in
