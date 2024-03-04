@@ -14,7 +14,7 @@
 # installation profile at installation time.
 #
 ## set specific KeTTeX directory structure
-## NOTE: portable
+## NOTE: single user (portable)
 TEXDIR @@TEXDIR@@
 TEXMFLOCAL @@TEXDIR@@/texmf-local
 TEXMFSYSVAR @@TEXDIR@@/texmf-var
@@ -25,7 +25,8 @@ TEXMFCONFIG @@TEXDIR@@/texmf-config
 #
 ## build both kettex for Windows/Mac OS X on Mac OS X
 binary_x86_64-darwin 1
-binary_win32 @@WITH_WINDOWS@@
+binary_windows @@WITH_WINDOWS@@
+binary_aarch64-linux @@WITH_LINUX@@
 binary_x86_64-linux @@WITH_LINUX@@
 binary_amd64-freebsd @@WITH_FREEBSD@@
 #
@@ -34,7 +35,7 @@ selected_scheme scheme-minimal
 collection-binextra 1
 collection-langjapanese 1
 collection-latexextra 1
-collection-xetex 1
+#collection-xetex 1
 collection-luatex 1
 collection-fontsrecommended 1
 collection-texworks @@WITH_WINDOWS@@
