@@ -8,6 +8,22 @@ set PATH=%TEMPKETTEXINST%\texinstwin;%SystemRoot%\system32;%SystemRoot%;
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 echo @@KETTEXPKG@@ installer
 
+::: check for version later than vista
+for /f "usebackq tokens=2 delims=[]" %%I in (`ver`) do set ver_str=%%I
+set ver_str=%ver_str:* =%
+::: windows 9x, 2000, xp, vista unsupported
+if %ver_str:~,2% == 4. goto :TOOOLD
+if %ver_str:~,2% == 5. goto :TOOOLD
+if %ver_str:~,3% == 6.0 (
+   echo WARNING: Windows 7 is the earliest supported version.
+   echo TeX Live 2020 has not been tested on Windows Vista.
+)
+if "x86"=="%PROCESSOR_ARCHITECTURE%" (
+if ""=="%PROCESSOR_ARCHITEW6432%" (
+   echo 32-bit no longer supported
+   goto :EOFF
+))
+
 ::: check %KETTEXROOT%
 if "%1" equ "" (
    echo.
@@ -19,18 +35,29 @@ if exist %KETTEXROOT%   goto :KETTEXEXISTS
 
 ::: prepare installation under %TEMP%
 echo preparing KeTTeX installation in %TEMPKETTEXINST% ...
-rmdir /S /Q %TEMPKETTEXINST%
+rmdir /S /Q %TEMPKETTEXINST%  >nul 2>&1
 mkdir %TEMPKETTEXINST%
 cd %~dp0
-move @@KETTEXPKG@@.tar.zst %TEMPKETTEXINST%
-move texinstwin %TEMPKETTEXINST%
+move @@KETTEXPKG@@.tar.zst %TEMPKETTEXINST%  >nul 2>&1
+move texinstwin %TEMPKETTEXINST%  >nul 2>&1
 
 ::: start installation
 echo installing KeTTeX in %KETTEXROOT% ... (It will take a while.)
-cd %KETTEXROOT%
-cd ..
+cd %KETTEXROOT%  >nul 2>&1
+cd ..  >nul 2>&1
 tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst
+
+::: initialize
+set PATH=C:\kettex\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
+tlmgr platform set windows
+fmtutil-sys --all
 goto :END
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:TOOOLD
+echo TeX Live does not run on this Windows version.
+echo TeX Live is supported on Windows 7 and later.
+goto :EOFF
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :KETTEXEXISTS
@@ -41,5 +68,8 @@ goto :END
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :END
 ::: cleanup %TEMPKETTEXINST%
-rmdir /S /Q %TEMPKETTEXINST%
+rmdir /S /Q %TEMPKETTEXINST% >nul 2>&1
+goto :EOFF
+
+:EOFF
 pause
