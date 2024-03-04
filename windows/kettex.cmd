@@ -1,6 +1,6 @@
 @echo off
 
-set PATH=C:\kettex\texlive\bin\win32;%SystemRoot%\system32;%SystemRoot%;
+set PATH=C:\kettex\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
 
 echo KeTTeX terminal
 echo.
