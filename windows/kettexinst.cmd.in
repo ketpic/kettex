@@ -33,6 +33,9 @@ if "%1" equ "" (
 echo checking KeTTeX root directory %KETTEXROOT% ...
 if exist %KETTEXROOT%   goto :KETTEXEXISTS
 
+echo done  checking KeTTeX root directory %KETTEXROOT%
+
+
 ::: prepare installation under %TEMP%
 echo preparing KeTTeX installation in %TEMPKETTEXINST% ...
 rmdir /S /Q %TEMPKETTEXINST%  >nul 2>&1
@@ -41,16 +44,30 @@ cd %~dp0
 move @@KETTEXPKG@@.tar.zst %TEMPKETTEXINST%  >nul 2>&1
 move texinstwin %TEMPKETTEXINST%  >nul 2>&1
 
+echo done  preparing KeTTeX installation in %TEMPKETTEXINST%
+
+
 ::: start installation
 echo installing KeTTeX in %KETTEXROOT% ... (It will take a while.)
+mkdir %KETTEXROOT%
 cd %KETTEXROOT%  >nul 2>&1
 cd ..  >nul 2>&1
-tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst  --totals --checkpoint=1000 --checkpoint-action=dot
+tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst  --totals
+::: unsupported options: --checkpoint=1000 --checkpoint-action=dot
 
-::: initialize
+echo done  installing KeTTeX in %KETTEXROOT%
+
+
+::: post process
 set PATH=%KETTEXROOT%\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
-tlmgr platform set windows
-fmtutil-sys --all
+echo running post process ... (It will take a while.)
+::: tlmgr platform set windows
+fmtutil-sys --all  >nul 2>&1
+
+echo done  running post process
+
+
+echo Welcome to KeTTeX!
 goto :END
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
