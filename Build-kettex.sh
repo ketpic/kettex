@@ -215,10 +215,10 @@ case ${TARGETOS} in
 
             ## copy texinstwin.zip
             mkdir -p ${KETTEXTEMP}/texinstwin
-            if [ ! -f windows/texinstwin.zip ]; then
+            if [ ! -f texinstwin.zip ]; then
                 wget http://mirror.ctan.org/systems/win32/w32tex/texinstwin.zip
             fi
-            unzip windows/texinstwin.zip -d ${KETTEXTEMP}/texinstwin
+            unzip texinstwin.zip -d ${KETTEXTEMP}/texinstwin
 
             (cd ${KETTEXTEMP}/
              zip -9 -r ${KETTEXPKG}.zip \

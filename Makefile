@@ -24,7 +24,7 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -rf macos/KeTTeX.app
-	# rm -f windows/texinstwin.zip
+	# rm -f texinstwin.zip
 	rm -f KeTTeX-{macos,windows,linux,freebsd}-20*.{dmg,zip,tar.zst}
 
 .PHONY: macos
