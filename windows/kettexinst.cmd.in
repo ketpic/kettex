@@ -94,7 +94,7 @@ goto :EOFF
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :END
 ::: cleanup %TEMPKETTEXINST%
-rmdir /S /Q %TEMPKETTEXINST% >nul 2>&1
+rmdir /S /Q %TEMPKETTEXINST%  >nul 2>&1
 goto :EOFF
 
 :EOFF
