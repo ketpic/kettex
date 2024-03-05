@@ -2,6 +2,7 @@
 
 ::: initial variables
 set KETTEXROOT=C:\kettex
+set KETTEXLOG=%KETTEXROOT%\install-kettex.log
 set TEMPKETTEXINST=%TEMP%\kettexinst
 set PATH=%TEMPKETTEXINST%\texinstwin;%SystemRoot%\system32;%SystemRoot%;
 
@@ -50,8 +51,8 @@ echo done  preparing KeTTeX installation in %TEMPKETTEXINST%
 ::: start installation
 echo installing KeTTeX in %KETTEXROOT% ... (It will take a while.)
 mkdir %KETTEXROOT%
-cd %KETTEXROOT%  >nul 2>&1
-cd ..  >nul 2>&1
+cd %KETTEXROOT%  >%KETTEXLOG% 2>&1
+cd ..  >%KETTEXLOG% 2>&1
 tar -xf %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst  --totals
 ::: unsupported options: --checkpoint=1000 --checkpoint-action=dot
 
@@ -60,9 +61,17 @@ echo done  installing KeTTeX in %KETTEXROOT%
 
 ::: post process
 set PATH=%KETTEXROOT%\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
-echo running post process ... (It will take a while.)
+echo running post process ...
 ::: tlmgr platform set windows
-fmtutil-sys --all  >nul 2>&1
+echo (1/3) running updmap-sys ...
+updmap-sys                        >%KETTEXLOG% 2>&1
+echo done  running updmap-sys
+echo (2/3) running fmtutil-sys ... (It will take a while.)
+fmtutil-sys --all                 >%KETTEXLOG% 2>&1
+echo done  running fmtutil-sys
+echo (3/3) running luaotfload-tool --update ... (It will take a while.)
+luaotfload-tool --update --force  >%KETTEXLOG% 2>&1
+echo done  running luaotfload-tool --update
 
 echo done  running post process
 
