@@ -15,7 +15,7 @@ KETTEXAPP=${KETTEXAPP:-${KETTEXTEMP}/kettex/KeTTeX.app}
 WITH_WINDOWS=${WITH_WINDOWS:-0}
 WITH_LINUX=${WITH_LINUX:-0}
 WITH_FREEBSD=${WITH_FREEBSD:-0}
-WITH_MACOS=1 ## default: build for Mac OS X
+WITH_MACOS=1 ## default: build for macOS
 TARGETOS=macos
 if [ $(( ${WITH_WINDOWS}+${WITH_LINUX}+${WITH_FREEBSD} )) -ge 1 ]; then
    WITH_MACOS=0
@@ -130,12 +130,40 @@ tlmgr uninstall --force \
       $(tlmgr list --only-installed --data 'name' | grep -e 'tex4ht' -e 'make4ht' -e 'tex4ebook' -e 'tlcockpit' -e 'xindy' -e 'xindex') \
     ||:
 
+case ${TARGETOS} in
+    windows)	cd ${KETTEXROOT}/bin/windows/ ;;
+    macos)		cd ${KETTEXROOT}/bin/universal-darwin/ ;;
+    linux)		cd ${KETTEXROOT}/bin/x86_64-linux/ ;;
+    freebsd)	cd ${KETTEXROOT}/bin/amd64-freebsd/ ;;
+esac
+rm -f man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
+
+case ${TARGETOS} in
+    linux)
+        cd ${KETTEXROOT}/bin/aarch64-linux/
+        rm -f man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
+        cd -
+        ;;
+esac
+
 # install the latest ketcindy with TDS
 if [ -f ${KETCINDYLATESTVERZIP} ]; then
     tlmgr uninstall --force \
           $(tlmgr list --only-installed --data 'name' | grep -e 'ketcindy') \
         ||:
     unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
+    rm -f ketcindy
+    # ln -s ../../texmf-local/scripts/ketcindy/ketcindy.pl ketcindy
+    cd -
+
+    case ${TARGETOS} in
+        linux)
+            cd ${KETTEXROOT}/bin/aarch64-linux/
+            rm -f ketcindy
+            # ln -s ../../texmf-local/scripts/ketcindy/ketcindy.pl ketcindy
+            cd -
+            ;;
+    esac
 fi
 
 ## setup suitable texmf.cnf
@@ -165,7 +193,7 @@ $__sed -i \
 ## BUILDING IMAGE ARCHIVE
 ## ==============================
 case ${TARGETOS} in
-    ## For Mac OS X, make KeTTeX.app which you can deploy everywhere on your system
+    ## For macOS, make KeTTeX.app which you can deploy everywhere on your system
     ## --------------------
     macos)
         $__cp macos/KeTTeX.app ${KETTEXTEMP}/kettex/
