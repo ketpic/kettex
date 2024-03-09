@@ -38,6 +38,9 @@ TLNET=${TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.te
 ## set usual main tlnet repository
 MAIN_TLNET=${MAIN_TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.texjp.org/2020/tlnet
 
+##
+KETCINDYLATESTVERZIP=ketcindy-4.4.75_kettex.zip
+
 ## initialize some environment variables
 export LANG=C LANGUAGE=C LC_ALL=C
 
@@ -126,6 +129,14 @@ tlmgr install ketcindy \
 tlmgr uninstall --force \
       $(tlmgr list --only-installed --data 'name' | grep -e 'tex4ht' -e 'make4ht' -e 'tex4ebook' -e 'tlcockpit' -e 'xindy' -e 'xindex') \
     ||:
+
+# install the latest ketcindy with TDS
+if [ -f ${KETCINDYLATESTVERZIP} ]; then
+    tlmgr uninstall --force \
+          $(tlmgr list --only-installed --data 'name' | grep -e 'ketcindy') \
+        ||:
+    unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
+fi
 
 ## setup suitable texmf.cnf
 case ${TARGETOS} in
