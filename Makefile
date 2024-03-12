@@ -25,7 +25,7 @@ clean:
 distclean: clean
 	rm -rf macos/KeTTeX.app
 	# rm -f texinstwin.zip
-	rm -f KeTTeX-{macos,windows,linux,freebsd}-20*.{dmg,zip,tar.zst}
+	rm -f KeTTeX-{macos,windows,linuxfreebsd}-20*.{dmg,zip,tar.zst}
 
 .PHONY: macos
 macos: macos/KeTTeX.app $(SRCS)
@@ -39,19 +39,14 @@ macos/KeTTeX.app: $(MACOSSRCS)
 windows: $(SRCS)
 	WITH_WINDOWS=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
 
-.PHONY: linux
-linux: $(SRCS)
+.PHONY: linuxfreebsd
+linuxfreebsd: $(SRCS)
 	WITH_LINUX=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
 
-.PHONY: freebsd
-freebsd: $(SRCS)
-	WITH_FREEBSD=1 TLNET=$(TLNET) KETTEXTEMP=$(KETTEXTEMP) ./Build-kettex.sh
-
-.PHONY: kettex-macos kettex-windows kettex-linux kettex-freebsd
+.PHONY: kettex-macos kettex-windows kettex-linuxfreebsd
 kettex-%: %
 KeTTeX-macos-$(shell date +%Y%m%d).dmg:         kettex-macos
 KeTTeX-windows-$(shell date +%Y%m%d).zip:       kettex-windows
-KeTTeX-linux-$(shell date +%Y%m%d).tar.zst:     kettex-linux
-KeTTeX-freebsd-$(shell date +%Y%m%d).tar.zst:   kettex-freebsd
+KeTTeX-linuxfreebsd-$(shell date +%Y%m%d).tar.zst:     kettex-linuxfreebsd
 
 ## end of file
