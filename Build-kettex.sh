@@ -14,14 +14,12 @@ KETTEXAPP=${KETTEXAPP:-${KETTEXTEMP}/kettex/KeTTeX.app}
 ## set target OS
 WITH_WINDOWS=${WITH_WINDOWS:-0}
 WITH_LINUX=${WITH_LINUX:-0}
-WITH_FREEBSD=${WITH_FREEBSD:-0}
 WITH_MACOS=1 ## default: build for macOS
 TARGETOS=macos
-if [ $(( ${WITH_WINDOWS}+${WITH_LINUX}+${WITH_FREEBSD} )) -ge 1 ]; then
+if [ $(( ${WITH_WINDOWS}+${WITH_LINUX} )) -ge 1 ]; then
    WITH_MACOS=0
    [ ${WITH_WINDOWS} -eq 1 ] && TARGETOS=windows
-   [ ${WITH_LINUX} -eq 1 ]   && TARGETOS=linux
-   [ ${WITH_FREEBSD} -eq 1 ]   && TARGETOS=freebsd
+   [ ${WITH_LINUX} -eq 1 ]   && TARGETOS=linuxfreebsd
 fi
 KETTEXPKG=KeTTeX-${TARGETOS}-$(date +%Y%m%d)
 
@@ -29,8 +27,7 @@ KETTEXPKG=KeTTeX-${TARGETOS}-$(date +%Y%m%d)
 TARGETOS_ARCHS=universal-darwin
 case ${TARGETOS} in
     windows)	TARGETOS_ARCHS='windows' ;;
-    linux)		TARGETOS_ARCHS='x86_64-linux aarch64-linux' ;;
-    freebsd)	TARGETOS_ARCHS='amd64-freebsd' ;;
+    linuxfreebsd)		TARGETOS_ARCHS='x86_64-linux aarch64-linux amd64-freebsd' ;;
 esac
 
 ## set given tlnet repository for TLYY installation
@@ -98,7 +95,6 @@ $__tar -C ${KETTEXROOT}/install-tl-unx --strip-components=1 -xf install-tl-unx.t
 mkdir -p ${KETTEXROOT}/install-tl-unx
 $__sed -e "s,@@WITH_WINDOWS@@,${WITH_WINDOWS}," \
        -e "s,@@WITH_LINUX@@,${WITH_LINUX}," \
-       -e "s,@@WITH_FREEBSD@@,${WITH_FREEBSD}," \
        -e "s,@@TEXDIR@@,${KETTEXROOT}," \
        kettex.profile.in >${KETTEXROOT}/install-tl-unx/kettex.profile
 
@@ -129,23 +125,12 @@ tlmgr install ketcindy \
 tlmgr uninstall --force \
       $(tlmgr list --only-installed --data 'name' | grep -e 'tex4ht' -e 'make4ht' -e 'tex4ebook' -e 'tlcockpit' -e 'xindy' -e 'xindex') \
     ||:
-
-case ${TARGETOS} in
-    windows)	cd ${KETTEXROOT}/bin/windows/ ;;
-    macos)		cd ${KETTEXROOT}/bin/universal-darwin/ ;;
-    linux)		cd ${KETTEXROOT}/bin/x86_64-linux/ ;;
-    freebsd)	cd ${KETTEXROOT}/bin/amd64-freebsd/ ;;
-esac
-rm -f ketcindy man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
-cd -
-
-case ${TARGETOS} in
-    linux)
-        cd ${KETTEXROOT}/bin/aarch64-linux/
-        rm -f ketcindy  man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
-        cd -
-        ;;
-esac
+for platform in windows universal-darwin x86_64-linux aarch64-linux amd64-freebsd; do
+    [ -d ${KETTEXROOT}/bin/${platform}/ ] && \
+        cd ${KETTEXROOT}/bin/${platform}/ && \
+        rm -f ketcindy man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook && \
+        cd - ||:
+done
 
 # install the latest ketcindy with TDS
 if [ -f ${KETCINDYLATESTVERZIP} ]; then
@@ -158,7 +143,7 @@ fi
 
 ## setup suitable texmf.cnf
 case ${TARGETOS} in
-    macos|linux|freebsd)
+    macos|linuxfreebsd)
         printf "%s\n" \
                "texmf_casefold_search = 0" \
                >>${KETTEXROOT}/texmf.cnf
@@ -211,7 +196,7 @@ case ${TARGETOS} in
     ##
     ## For other platform (Windows/Linux), make tar+zstandard image
     ## --------------------
-    windows|linux|freebsd)
+    windows|linuxfreebsd)
         ## dropped Darwin platforms
         ##     $ tlmgr platform remove x86_64-darwin
         ## You are running on platform x86_64-darwin, you cannot remove that one!
