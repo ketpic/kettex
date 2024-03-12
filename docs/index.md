@@ -29,12 +29,7 @@ sudo xattr -r -d com.apple.quarantine    /Applications/KeTTeX.app/
 
 <!-- TODO: スクリーンショットとともに、インストール方法を説明する -->
 
-### Linux (`x86_64`, `aarch64`)
-1. `KeTTeX-linux-YYYYMMDD.tar.zst` を然るべきところに展開します。
+### Linux (`x86_64-linux`, `aarch64-linux`), FreeBSD (`amd64-freebsd`)
+1. `KeTTeX-linuxfreebsd-YYYYMMDD.tar.zst` を然るべきところに展開します。
 2. ここでは、`/opt/kettex/` に展開された前提で、環境変数`PATH`に`/opt/kettex/bin/x86_64-linux/`を通したとします。
-3. `fmtutil-sys --all` を実行します。
-
-### FreeBSD (`amd64`)
-1. `KeTTeX-freebsd-YYYYMMDD.tar.zst` を然るべきところに展開します。
-2. ここでは、`/opt/kettex/` に展開された前提で、環境変数`PATH`に`/opt/kettex/bin/amd64-freebsd/`を通したとします。
 3. `fmtutil-sys --all` を実行します。
