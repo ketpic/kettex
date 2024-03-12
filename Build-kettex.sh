@@ -136,12 +136,13 @@ case ${TARGETOS} in
     linux)		cd ${KETTEXROOT}/bin/x86_64-linux/ ;;
     freebsd)	cd ${KETTEXROOT}/bin/amd64-freebsd/ ;;
 esac
-rm -f man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
+rm -f ketcindy man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
+cd -
 
 case ${TARGETOS} in
     linux)
         cd ${KETTEXROOT}/bin/aarch64-linux/
-        rm -f man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
+        rm -f ketcindy  man httexi htmex htxelatex xindex mk4ht xindy htxetex htlatex xhlatex ht make4ht texindy tlcockpit httex tex4ebook
         cd -
         ;;
 esac
@@ -152,18 +153,7 @@ if [ -f ${KETCINDYLATESTVERZIP} ]; then
           $(tlmgr list --only-installed --data 'name' | grep -e 'ketcindy') \
         ||:
     unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
-    rm -f ketcindy
-    # ln -s ../../texmf-local/scripts/ketcindy/ketcindy.pl ketcindy
-    cd -
-
-    case ${TARGETOS} in
-        linux)
-            cd ${KETTEXROOT}/bin/aarch64-linux/
-            rm -f ketcindy
-            # ln -s ../../texmf-local/scripts/ketcindy/ketcindy.pl ketcindy
-            cd -
-            ;;
-    esac
+    mktexlsr ${KETTEXROOT}/texmf-local/
 fi
 
 ## setup suitable texmf.cnf
