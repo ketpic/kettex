@@ -28,7 +28,7 @@ binary_universal-darwin 1
 binary_windows @@WITH_WINDOWS@@
 binary_aarch64-linux @@WITH_LINUX@@
 binary_x86_64-linux @@WITH_LINUX@@
-binary_amd64-freebsd @@WITH_FREEBSD@@
+binary_amd64-freebsd @@WITH_LINUX@@
 #
 ## set installation scheme and custom categories
 selected_scheme scheme-minimal
