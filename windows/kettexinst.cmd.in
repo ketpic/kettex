@@ -44,6 +44,11 @@ mkdir %TEMPKETTEXINST%
 cd %~dp0
 move @@KETTEXPKG@@.tar.zst %TEMPKETTEXINST%  >nul 2>&1
 move texinstwin %TEMPKETTEXINST%  >nul 2>&1
+if exist %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst (
+   echo.
+) else (
+  goto :KETTEXTARBALLDOESNOTEXIST
+)
 
 echo done  preparing KeTTeX installation in %TEMPKETTEXINST%
 
@@ -89,6 +94,12 @@ goto :EOFF
 :KETTEXEXISTS
 echo %KETTEXROOT% already exists!
 echo kettexinst.cmd do not install @@KETTEXPKG@@ in %KETTEXROOT%
+goto :EOFF
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:KETTEXTARBALLDOESNOTEXIST
+echo %TEMPKETTEXINST%\@@KETTEXPKG@@.tar.zst does not exist!
+echo You may not extract **completely** @@KETTEXPKG@@.zip.
 goto :EOFF
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
