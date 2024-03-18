@@ -37,6 +37,7 @@ MAIN_TLNET=${MAIN_TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://
 
 ##
 KETCINDYLATESTVERZIP=ketcindy-4.4.75_kettex.zip
+EMATHLATESTVERZIP=emath-240123_tds.zip
 
 ## initialize some environment variables
 export LANG=C LANGUAGE=C LC_ALL=C
@@ -132,12 +133,18 @@ for platform in windows universal-darwin x86_64-linux aarch64-linux amd64-freebs
         cd - ||:
 done
 
-# install the latest ketcindy with TDS
+# install the latest ketcindy
 if [ -f ${KETCINDYLATESTVERZIP} ]; then
     tlmgr uninstall --force \
           $(tlmgr list --only-installed --data 'name' | grep -e 'ketcindy') \
         ||:
     unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
+    mktexlsr ${KETTEXROOT}/texmf-local/
+fi
+
+# install the latest emath
+if [ -f ${EMATHLATESTVERZIP} ]; then
+    unzip ${EMATHLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
     mktexlsr ${KETTEXROOT}/texmf-local/
 fi
 
