@@ -155,6 +155,14 @@ case ${TARGETOS} in
                "texmf_casefold_search = 0" \
                >>${KETTEXROOT}/texmf.cnf
         ;;
+    windows)
+        printf "%s\n" \
+               "command_line_encoding.ptex = none       " \
+               "command_line_encoding.eptex = none      " \
+               "command_line_encoding.platex = none     " \
+               "command_line_encoding.platex-dev = none " \
+               >>${KETTEXROOT}/texmf.cnf
+        ;;
 esac
 printf "%s\n" \
        "font_mem_size = 16000000 " \
