@@ -1,4 +1,5 @@
 @echo off
+chcp 65001
 
 set PATH=C:\kettex\texlive\bin\windows;%SystemRoot%\system32;%SystemRoot%;
 
