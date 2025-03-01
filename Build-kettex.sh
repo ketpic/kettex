@@ -6,6 +6,10 @@ cd "$(dirname "$0")"
 ## INITIALIZATION
 ## ==============================
 
+##
+KETCINDYLATESTVERZIP=ketcindy-4.5.21_kettex.zip
+EMATHLATESTVERZIP=emath-240123_tds.zip
+
 ## set temporary KeTTeX root
 KETTEXTEMP=${KETTEXTEMP:-$(pwd)/Work}
 KETTEXROOT=${KETTEXROOT:-${KETTEXTEMP}/kettex/texlive}
@@ -35,9 +39,6 @@ TLNET=${TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.te
 ## set usual main tlnet repository
 MAIN_TLNET=${MAIN_TLNET:-http://mirror.ctan.org/systems/texlive/tlnet} # http://texlive.texjp.org/2020/tlnet
 
-##
-KETCINDYLATESTVERZIP=ketcindy-4.4.77_kettex.zip
-EMATHLATESTVERZIP=emath-240123_tds.zip
 
 ## initialize some environment variables
 export LANG=C LANGUAGE=C LC_ALL=C
@@ -138,8 +139,18 @@ if [ -f ${KETCINDYLATESTVERZIP} ]; then
     tlmgr uninstall --force \
           $(tlmgr list --only-installed --data 'name' | grep -e 'ketcindy') \
         ||:
-    unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-local/
-    mktexlsr ${KETTEXROOT}/texmf-local/
+    unzip ${KETCINDYLATESTVERZIP} -d ${KETTEXROOT}/texmf-dist/
+    mktexlsr ${KETTEXROOT}/texmf-dist/
+
+##TODO: windows
+    for platform in universal-darwin x86_64-linux aarch64-linux amd64-freebsd; do
+        [ -d ${KETTEXROOT}/bin/${platform}/ ] && \
+            cd ${KETTEXROOT}/bin/${platform}/ && \
+            ln -s ../../texmf-dist/scripts/ketcindy/ketcindy.pl ketcindy && \
+            cd - ||:
+done
+
+
 fi
 
 # install the latest emath
