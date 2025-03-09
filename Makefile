@@ -1,4 +1,4 @@
-TLNET=http://texlive.texjp.org/2023/tlnet
+TLNET=http://texlive.texjp.org/2024/tlnet
 KETTEXTEMP=$(shell pwd)/Work
 
 SRCS=\
