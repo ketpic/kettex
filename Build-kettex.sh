@@ -111,8 +111,11 @@ rm -rf ${KETTEXROOT}/install-tl-unx
 tlmgr install ketcindy \
     algorithms algorithmicx \
     bbold bbold-type1 \
+    bera \
     ebgaramond \
+    esvect \
     fontawesome \
+    grotesq \
     inconsolata \
     mnsymbol \
     physics \
