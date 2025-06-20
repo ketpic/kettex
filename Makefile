@@ -1,4 +1,4 @@
-TLNET=http://texlive.texjp.org/2024/tlnet
+TLNET=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2024/tlnet-final/
 KETTEXTEMP=$(shell pwd)/Work
 
 SRCS=\
