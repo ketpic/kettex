@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 ## ==============================
 
 ##
-KETCINDYLATESTVERZIP=ketcindy-4.5.21_kettex.zip
+KETCINDYLATESTVERZIP=ketcindy-4.5.49_kettex.zip
 EMATHLATESTVERZIP=emath-240123_tds.zip
 
 ## set temporary KeTTeX root
@@ -120,9 +120,12 @@ tlmgr install ketcindy \
     mnsymbol \
     physics \
     sourcecodepro sourcesanspro \
+    stmaryrd \
     systeme \
     ulem \
     roboto \
+    nicematrix \
+    plex \
     stix2-otf stix2-type1 \
     noto-emoji
 
@@ -212,10 +215,10 @@ case ${TARGETOS} in
         ## make ULFO-formatted dmg.
         ## You can extract the one on macOS 10.11+ (El Capitan or higher version)
         # hdiutil_encopts="-format UDZO -imagekey zlib-level=9"
-        hdiutil_encopts="-fs HFS+ -format ULFO"  ##<= macOS 10.11+ only (fastest, smallest)
+        # hdiutil_encopts="-fs HFS+ -format ULFO"  ##<= macOS 10.11+ only (fastest, smallest)
         # hdiutil_encopts="-fs APFS -format ULFO"  ##<= macOS 10.13+ only
         # hdiutil_encopts="-fs HFS+ -format ULMO"  ##<= macOS 10.15+ only
-        # hdiutil_encopts="-fs APFS -format ULMO"  ##<= macOS 10.15+ only
+        hdiutil_encopts="-fs APFS -format ULMO"  ##<= macOS 10.15+ only
         hdiutil create -ov -srcfolder ${KETTEXTEMP}/kettex \
                 ${hdiutil_encopts} \
                 -volname "KeTTeX" ${KETTEXPKG}.dmg
