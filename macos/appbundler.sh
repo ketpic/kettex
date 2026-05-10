@@ -25,6 +25,11 @@ on run
 end run
 __APPLESCRIPT__
 
+## replace icon: remove Assets.car (macOS 26 osacompile embeds default
+## icon there, which takes priority over applet.icns)
+[ -f ${BUILDROOT}/${app_name}/Contents/Resources/Assets.car ] && \
+    rm -f ${BUILDROOT}/${app_name}/Contents/Resources/Assets.car
+
 ## replace default icon with our project icon
 [ -f ${BUILDROOT}/${app_name}/Contents/Resources/droplet.icns ] && \
     cp -fva ${BUILDROOT}/../artwork/ketcindy.icns \
