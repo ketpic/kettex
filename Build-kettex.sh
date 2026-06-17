@@ -226,9 +226,9 @@ case ${TARGETOS} in
         ;;
 
     ##
-    ## For other platform (Windows/Linux), make tar+zstandard image
+    ## For Windows, build an installer using NSIS
     ## --------------------
-    windows|linuxfreebsd)
+    windows)
         ## dropped Darwin platforms
         ##     $ tlmgr platform remove x86_64-darwin
         ## You are running on platform x86_64-darwin, you cannot remove that one!
@@ -245,34 +245,37 @@ case ${TARGETOS} in
         ## and check other symbolic-linked files.
         find ${KETTEXROOT} -type l
 
-        if [ $WITH_WINDOWS -eq 1 ]; then
-            $__cp windows/kettex.cmd ${KETTEXTEMP}/kettex/
-        fi
+        $__cp windows/kettex.cmd ${KETTEXTEMP}/kettex/
+
+        # Finally, build an installer using NSIS
+        makensis -DKETTEXPKG=${KETTEXPKG} -DKETTEXTEMP=${KETTEXTEMP} windows/kettexinst.nsi
+        mv windows/${KETTEXPKG}.exe .
+        echo $(basename $0): built ${KETTEXPKG}.exe
+        ;;
+
+    ##
+    ## For other platforms (Linux), make tar+zstandard image
+    ## --------------------
+    linuxfreebsd)
+        ## dropped Darwin platforms
+        ##     $ tlmgr platform remove x86_64-darwin
+        ## You are running on platform x86_64-darwin, you cannot remove that one!
+        ##     tlmgr: action platform returned an error; continuing.
+        ##     tlmgr: An error has occurred. See above messages. Exiting.
+        ## so, forcely remove the one
+        rm -rf ${KETTEXROOT}/bin/{universal,x86_64}-darwin
+
+        ## replace symbolic-linked map file with hard copy respectively,
+        rm -f ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/psfonts.map
+        cp -a ${KETTEXROOT}/texmf-var/fonts/map/dvips/updmap/{psfonts_t1,psfonts}.map
+        rm -f ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+        cp -a ${KETTEXROOT}/texmf-var/fonts/map/pdftex/updmap/{pdftex_dl14,pdftex}.map
+        ## and check other symbolic-linked files.
+        find ${KETTEXROOT} -type l
 
         ## Finally, build tar+zstd image archive
         $__tar -C ${KETTEXTEMP} -cf - kettex | $__zstd >${KETTEXPKG}.tar.zst
         echo $(basename $0): built ${KETTEXPKG}.tar.zst
-
-        ## for Windows
-        if [ $WITH_WINDOWS -eq 1 ]; then
-            $__sed -e "s,@@KETTEXPKG@@,${KETTEXPKG}," \
-                   windows/kettexinst.cmd.in >${KETTEXTEMP}/kettexinst.cmd
-            mv ${KETTEXPKG}.tar.zst ${KETTEXTEMP}/
-
-            ## copy texinstwin.zip
-            mkdir -p ${KETTEXTEMP}/texinstwin
-            if [ ! -f texinstwin.zip ]; then
-                wget http://mirror.ctan.org/systems/win32/w32tex/texinstwin.zip
-            fi
-            unzip texinstwin.zip -d ${KETTEXTEMP}/texinstwin
-
-            (cd ${KETTEXTEMP}/
-             zip -9 -r ${KETTEXPKG}.zip \
-                 kettexinst.cmd ${KETTEXPKG}.tar.zst texinstwin/*
-            )
-            mv ${KETTEXTEMP}/${KETTEXPKG}.zip .
-            echo $(basename $0): built ${KETTEXPKG}.zip
-        fi
         ;;
 
     *)

@@ -9,8 +9,7 @@ MACOSSRCS=\
 	macos/appbundler.sh \
 	macos/runketcindy.sh
 WINDOWSSRCS=\
-	windows/kettex.cmd \
-	windows/kettexinst.cmd.in
+	windows/kettex.cmd
 
 all:
 	@egrep -h "^[-_A-z0-9]*:" Makefile | sort
@@ -25,7 +24,7 @@ clean:
 distclean: clean
 	rm -rf macos/KeTTeX.app
 	# rm -f texinstwin.zip
-	rm -f KeTTeX-{macos,windows,linuxfreebsd}-20*.{dmg,zip,tar.zst}
+	rm -f KeTTeX-{macos,windows,linuxfreebsd}-20*.{dmg,exe,tar.zst}
 
 .PHONY: macos
 macos: macos/KeTTeX.app $(SRCS)
@@ -46,7 +45,7 @@ linuxfreebsd: $(SRCS)
 .PHONY: kettex-macos kettex-windows kettex-linuxfreebsd
 kettex-%: %
 KeTTeX-macos-$(shell date +%Y%m%d).dmg:         kettex-macos
-KeTTeX-windows-$(shell date +%Y%m%d).zip:       kettex-windows
+KeTTeX-windows-$(shell date +%Y%m%d).exe:       kettex-windows
 KeTTeX-linuxfreebsd-$(shell date +%Y%m%d).tar.zst:     kettex-linuxfreebsd
 
 ## end of file
