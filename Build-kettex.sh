@@ -248,7 +248,7 @@ case ${TARGETOS} in
         $__cp windows/kettex.cmd ${KETTEXTEMP}/kettex/
 
         # Finally, build an installer using NSIS
-        makensis -DKETTEXPKG=${KETTEXPKG} -DKETTEXTEMP=${KETTEXTEMP} windows/kettexinst.nsi
+        LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 makensis -DKETTEXPKG=${KETTEXPKG} -DKETTEXTEMP=${KETTEXTEMP} windows/kettexinst.nsi
         mv windows/${KETTEXPKG}.exe .
         echo $(basename $0): built ${KETTEXPKG}.exe
         ;;
